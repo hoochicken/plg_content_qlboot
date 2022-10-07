@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" version="1.3.4" group="content" method="upgrade">
+<extension type="plugin" version="1.4.0" group="content" method="upgrade">
     <name>PLG_CONTENT_QLBOOT</name>
     <author>Mareike Riegel</author>
     <creationDate>April 2020</creationDate>
@@ -7,8 +7,11 @@
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>http://www.ql.de/</authorUrl>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>1.3.5</version>
+    <version>1.4.0</version>
     <description>PLG_CONTENT_QLBOOT_DESCRIPTION</description>
+    <updateservers>
+        <server type="extension" priority="1" name="qlboot - Updates">https://raw.githubusercontent.com/hoochicken/plg_content_qlboot/main/_jupdate/plg_content_qlboot.xml</server>
+    </updateservers>
     <files>
         <filename plugin="qlboot">qlboot.php</filename>
         <filename plugin="qlboot">index.html</filename>
