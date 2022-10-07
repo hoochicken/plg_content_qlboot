@@ -4,7 +4,7 @@
 		<client>site</client>
 		<type>plugin</type>
 		<folder>content</folder>
-		<element>qlform</element>
+		<element>qlboot</element>
 		<version>11.2.0</version>
 		<description>qlboot - structure articles</description>
 		<infourl title="ql.de - Blackforest Software">https://ql.de</infourl>
