@@ -1,0 +1,36 @@
+/**
+ * @package		plg_content_qlboot
+ * @copyright	Copyright (C) 2015 ql.de All rights reserved.
+ * @author 		Mareike Riegel mareike.riegel@ql.de
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+.qlboot.flex {display:flex;}
+.qlboot.flex>div:first-child{padding-left:0;}
+.qlboot.flex>div:last-child{padding-right:0;}
+.qlboot.flex>.flex0{flex:0;}
+.qlboot.flex>.flex1{flex:1;}
+.qlboot.flex>.flex2{flex:2;}
+.qlboot.flex>.flex3{flex:3;}
+.qlboot.flex>.flex4{flex:4;}
+.qlboot.flex>.flex5{flex:5;}
+.qlboot.flex>.flex6{flex:6;}
+.qlboot.flex>.flex7{flex:7;}
+.qlboot.flex>.flex8{flex:8;}
+.qlboot.flex>.flex9{flex:9;}
+.qlboot.flex>.flex10{flex:10;}
+.qlboot.flex>.flex11{flex:11;}
+.qlboot.flex>.flex12{flex:12;}
+
+.qlboot.flex>.order1{order:1;}
+.qlboot.flex>.order2{order:2;}
+.qlboot.flex>.order3{order:3;}
+.qlboot.flex>.order4{order:4;}
+.qlboot.flex>.order5{order:5;}
+.qlboot.flex>.order6{order:6;}
+.qlboot.flex>.order7{order:7;}
+.qlboot.flex>.order8{order:8;}
+.qlboot.flex>.order9{order:9;}
+.qlboot.flex>.order10{order:10;}
+.qlboot.flex>.order11{order:11;}
+.qlboot.flex>.order12{order:12;}

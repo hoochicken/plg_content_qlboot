@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" version="1.3.4" group="content" method="upgrade">
+    <name>PLG_CONTENT_QLBOOT</name>
+    <author>Mareike Riegel</author>
+    <creationDate>April 2020</creationDate>
+    <copyright>Copyright (C) 2020 ql.de All rights reserved.</copyright>
+    <authorEmail>mareike.riegel@ql.de</authorEmail>
+    <authorUrl>http://www.ql.de/</authorUrl>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>1.3.5</version>
+    <description>PLG_CONTENT_QLBOOT_DESCRIPTION</description>
+    <files>
+        <filename plugin="qlboot">qlboot.php</filename>
+        <filename plugin="qlboot">index.html</filename>
+        <folder plugin="qlboot">language</folder>
+        <folder plugin="qlboot">css</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/en-GB.plg_content_qlboot.ini</language>
+        <language tag="en-GB">language/en-GB/en-GB.plg_content_qlboot.sys.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.plg_content_qlboot.ini</language>
+        <language tag="de-DE">language/de-DE/de-DE.plg_content_qlboot.sys.ini</language>
+    </languages>
+	<config>
+		<fields name="params">
+            <fieldset name="basic">
+                <field name="useStyles" label="PLG_CONTENT_QLBOOT_USESTYLE_LABEL" description="PLG_CONTENT_QLBOOT_USESTYLE_DESC" class="btn-group" type="radio" default="0">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field name="bootstrap" label="PLG_CONTENT_QLBOOT_BOOTSTRAP_LABEL" description="PLG_CONTENT_QLBOOT_BOOTSTRAP_DESC" class="btn-group" type="radio" default="0">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field name="default" label="PLG_CONTENT_QLBOOT_DEFAULT_LABEL" description="PLG_CONTENT_QLBOOT_DEFAULT_DESC" class="btn-group" type="radio" default="row-fluid">
+                    <option value="row-fluid">PLG_CONTENT_QLBOOT_ROW</option>
+                    <option value="flex">PLG_CONTENT_QLBOOT_FLEX</option>
+                </field>
+                <field type="spacer" name="spacerRow" label="PLG_CONTENT_QLBOOT_SPACERROW"/>
+                <field name="rowTextAlign"
+                       label="PLG_CONTENT_QLBOOT_TEXTALIGN_LABEL"
+                       description="PLG_CONTENT_QLBOOT_TEXTALIGN_DESC"
+                       type="list"
+                       default="justify">
+                    <option value="justify">PLG_CONTENT_QLBOOT_TEXTALIGN_JUSTIFY</option>
+                    <option value="left">PLG_CONTENT_QLBOOT_TEXTALIGN_LEFT</option>
+                    <option value="right">PLG_CONTENT_QLBOOT_TEXTALIGN_RIGHT</option>
+                    <option value="center">PLG_CONTENT_QLBOOT_TEXTALIGN_CENTER</option>
+                </field>
+                <field name="rowPadding"
+                       label="PLG_CONTENT_QLBOOT_PADDING_LABEL"
+                       description="PLG_CONTENT_QLBOOT_PADDING_DESC"
+                       type="integer"
+                       default="0"
+                       first="0"
+                       last="50"
+                       step="1">
+                </field>
+                <field type="spacer" name="spacerFlex" label="PLG_CONTENT_QLBOOT_SPACERFLEX"/>
+                <field name="flexTextAlign"
+                       label="PLG_CONTENT_QLBOOT_TEXTALIGN_LABEL"
+                       description="PLG_CONTENT_QLBOOT_TEXTALIGN_DESC"
+                       type="list"
+                       default="justify">
+                    <option value="justify">PLG_CONTENT_QLBOOT_TEXTALIGN_JUSTIFY</option>
+                    <option value="left">PLG_CONTENT_QLBOOT_TEXTALIGN_LEFT</option>
+                    <option value="right">PLG_CONTENT_QLBOOT_TEXTALIGN_RIGHT</option>
+                    <option value="center">PLG_CONTENT_QLBOOT_TEXTALIGN_CENTER</option>
+                </field>
+                <field name="flexPadding"
+                       label="PLG_CONTENT_QLBOOT_PADDING_LABEL"
+                       description="PLG_CONTENT_QLBOOT_PADDING_DESC"
+                       type="integer"
+                       default="0"
+                       first="0"
+                       last="50"
+                       step="1">
+                </field>
+                <field name="flexSwitch"
+                       label="PLG_CONTENT_QLBOOT_SWITCH_LABEL"
+                       description="PLG_CONTENT_QLBOOT_SWITCH_DESC"
+                       type="integer"
+                       default="500"
+                       first="400"
+                       last="900"
+                       step="20">
+                </field>
+            </fieldset>
+		</fields>
+	</config>
+</extension>
