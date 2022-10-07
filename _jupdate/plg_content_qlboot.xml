@@ -5,7 +5,7 @@
 		<type>plugin</type>
 		<folder>content</folder>
 		<element>qlboot</element>
-		<version>11.2.0</version>
+		<version>1.4.0</version>
 		<description>qlboot - structure articles</description>
 		<infourl title="ql.de - Blackforest Software">https://ql.de</infourl>
 		<downloads>
