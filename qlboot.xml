@@ -15,6 +15,7 @@
     <files>
         <filename plugin="qlboot">qlboot.php</filename>
         <filename plugin="qlboot">index.html</filename>
+	<filename plugin="qlboot">README.md</filename>
         <folder plugin="qlboot">language</folder>
         <folder plugin="qlboot">css</folder>
     </files>
