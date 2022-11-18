@@ -21,18 +21,20 @@ class plgContentQlboot extends JPlugin
     protected $end_span = '/span';
     protected $arr_attributes = array('style', 'class', 'id', 'type',);
     protected $attributes = array();
+    protected $pluginName = array();
 
     /**
      * onContentPrepare :: some kind of controller of plugin
      */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
+        $pluginName = $this->getPluginName();
         $document = JFactory::getDocument();
         if ($context == 'com_finder.indexer') return true;
         if (1 == $this->params->get('bootstrap', 0)) JHtml::_('bootstrap.framework');
         if (1 == $this->params->get('useStyles', 0)) {
-            $document->addStyleSheet(JURI::base() . 'plugins/content/' . $this->get('_name') . '/css/' . $this->get('_name') . '.css');
-            $document->addStyleSheet(JURI::base() . 'plugins/content/' . $this->get('_name') . '/css/' . $this->get('_name') . '-flex.css');
+            $document->addStyleSheet(JURI::base() . 'plugins/content/' . $pluginName . '/css/' . $pluginName . '.css');
+            $document->addStyleSheet(JURI::base() . 'plugins/content/' . $pluginName . '/css/' . $pluginName . '-flex.css');
         }
 
         $this->addStyles();
@@ -41,6 +43,12 @@ class plgContentQlboot extends JPlugin
         /*set start tag*/
         //$article->text=$this->get($article->text);
         $article->text = $this->getMatches($article->text);
+    }
+
+    function getPluginName()
+    {
+        if ((int) JVERSION <= 3) return $this->get('_name');
+        return $this->_name;
     }
 
     function checkTags($str)

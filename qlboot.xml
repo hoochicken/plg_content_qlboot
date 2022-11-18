@@ -7,17 +7,18 @@
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>http://www.ql.de/</authorUrl>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>1.4.0</version>
+    <version>1.4.2</version>
     <description>PLG_CONTENT_QLBOOT_DESCRIPTION</description>
     <updateservers>
         <server type="extension" priority="1" name="qlboot - Updates">https://raw.githubusercontent.com/hoochicken/plg_content_qlboot/main/_jupdate/plg_content_qlboot.xml</server>
     </updateservers>
     <files>
-        <filename plugin="qlboot">qlboot.php</filename>
-        <filename plugin="qlboot">index.html</filename>
-	<filename plugin="qlboot">README.md</filename>
-        <folder plugin="qlboot">language</folder>
+        <folder plugin="qlboot">_update</folder>
         <folder plugin="qlboot">css</folder>
+        <folder plugin="qlboot">language</folder>
+        <filename plugin="qlboot">index.html</filename>
+        <filename plugin="qlboot">qlboot.php</filename>
+        <filename plugin="qlboot">README.md</filename>
     </files>
     <languages>
         <language tag="en-GB">language/en-GB/en-GB.plg_content_qlboot.ini</language>

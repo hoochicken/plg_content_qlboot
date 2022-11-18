@@ -5,11 +5,11 @@
 		<type>plugin</type>
 		<folder>content</folder>
 		<element>qlboot</element>
-		<version>1.4.0</version>
+		<version>1.4.2</version>
 		<description>qlboot - structure articles</description>
 		<infourl title="ql.de - Blackforest Software">https://ql.de</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/hoochicken/plg_content_qlboot/archive/refs/tags/v1.4.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/hoochicken/plg_content_qlboot/archive/refs/tags/v1.4.2.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
