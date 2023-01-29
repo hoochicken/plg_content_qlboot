@@ -59,8 +59,8 @@ class plgContentQlboot extends JPlugin
             $wam->useScript('jquery');
         }
         if ((bool)$this->params->get('useStyles', false)) {
-            $wam->registerAndUseStyle('plg_content_boot', 'plg_content_boot/qlboot.css');
-            $wam->registerAndUseStyle('plg_content_boot_2', 'plg_content_boot/qlboot-flex.css');
+            $wam->registerAndUseStyle('plg_content_qlboot', 'plg_content_boot/qlboot.css');
+            $wam->registerAndUseStyle('plg_content_qlboot', 'plg_content_boot/qlboot-flex.css');
         }
         $wam->addInlineStyle($this->getStyles());
     }
