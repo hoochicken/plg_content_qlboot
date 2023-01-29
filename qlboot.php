@@ -60,7 +60,7 @@ class plgContentQlboot extends JPlugin
         }
         if ((bool)$this->params->get('useStyles', false)) {
             $wam->registerAndUseStyle('plg_content_qlboot', 'plg_content_qlboot/qlboot.css');
-            $wam->registerAndUseStyle('plg_content_qlboot', 'plg_content_qlboot/qlboot-flex.css');
+            $wam->registerAndUseStyle('plg_content_qlboot_flex', 'plg_content_qlboot/qlboot-flex.css');
         }
         $wam->addInlineStyle($this->getStyles());
     }
