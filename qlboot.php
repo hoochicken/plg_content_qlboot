@@ -7,6 +7,8 @@
  */
 
 //no direct access
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die ('Restricted Access');
 
 jimport('joomla.plugin.plugin');
@@ -28,21 +30,56 @@ class plgContentQlboot extends JPlugin
      */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
+        if ($context == 'com_finder.indexer') return true;
+        if ($this->isJoomla4(JVERSION)) {
+            $this->addWebAssets();
+        } else {
+            $this->addWebAssetsJoomla3();
+        }
+        if (false == $this->checkTags($article->text)) return true;
+        $article->text = $this->clearTags($article->text);
+        $article->text = $this->getMatches($article->text);
+    }
+
+    /**
+     *
+     */
+    public function isJoomla4($version)
+    {
+        return 4 <= $version;
+    }
+
+    /**
+     * onContentPrepare :: some kind of controller of plugin
+     */
+    private function addWebAssets()
+    {
+        $wam = Factory::getDocument()->getWebAssetManager();
+        if ((bool)$this->params->get('bootstrap', false)) {
+            $wam->useScript('jquery');
+        }
+        if ((bool)$this->params->get('useStyles', false)) {
+            $wam->registerAndUseStyle('plg_content_boot', 'plg_content_boot/qlboot.css');
+            $wam->registerAndUseStyle('plg_content_boot_2', 'plg_content_boot/qlboot-flex.css');
+        }
+        $wam->addInlineStyle($this->getStyles());
+    }
+
+    /**
+     * onContentPrepare :: some kind of controller of plugin
+     */
+    private function addWebAssetsJoomla3()
+    {
         $pluginName = $this->getPluginName();
         $document = JFactory::getDocument();
-        if ($context == 'com_finder.indexer') return true;
-        if (1 == $this->params->get('bootstrap', 0)) JHtml::_('bootstrap.framework');
-        if (1 == $this->params->get('useStyles', 0)) {
+        if ((boolean)$this->params->get('bootstrap', false)) {
+            JHtml::_('bootstrap.framework');
+        }
+        if ((boolean)$this->params->get('useStyles', false)) {
             $document->addStyleSheet(JURI::base() . 'plugins/content/' . $pluginName . '/css/' . $pluginName . '.css');
             $document->addStyleSheet(JURI::base() . 'plugins/content/' . $pluginName . '/css/' . $pluginName . '-flex.css');
         }
-
-        $this->addStyles();
-        if (false == $this->checkTags($article->text)) return true;
-        $article->text = $this->clearTags($article->text);
-        /*set start tag*/
-        //$article->text=$this->get($article->text);
-        $article->text = $this->getMatches($article->text);
+        $document->addScriptDeclaration($this->getStyles());
     }
 
     function getPluginName()
@@ -180,7 +217,7 @@ class plgContentQlboot extends JPlugin
         return $str;
     }
 
-    function addStyles()
+    function getStyles()
     {
         $styles = array();
         $styles[] = '.qlboot.flex>div';
@@ -198,6 +235,6 @@ class plgContentQlboot extends JPlugin
         $styles[] = 'padding:' . $this->params->get('rowPadding', 0) . 'px;';
         $styles[] = 'text-align:' . $this->params->get('rowTextAlign', 'justify') . ';';
         $styles[] = '}';
-        JFactory::getDocument()->addStyleDeclaration(implode("\n", $styles));
+        return implode("\n", $styles);
     }
 }
