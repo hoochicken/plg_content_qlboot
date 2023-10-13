@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        plg_content_qlboot
- * @copyright    Copyright (C) 2015 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -17,13 +17,14 @@ class plgContentQlboot extends JPlugin
 {
 
     /*todo: getAttributes class="row", class="flex"*/
-    protected $start_row = 'row';
-    protected $end_row = '/row';
-    protected $start_span = 'span';
-    protected $end_span = '/span';
-    protected $arr_attributes = array('style', 'class', 'id', 'type',);
-    protected $attributes = array();
-    protected $pluginName = array();
+    protected int $bootstrap_version = 5;
+    protected string $start_row = 'row';
+    protected string $end_row = '/row';
+    protected string $start_span = 'span';
+    protected string $end_span = '/span';
+    protected array $arr_attributes = ['style', 'class', 'id', 'type',];
+    protected array $attributes = [];
+    protected $pluginName = [];
 
     /**
      * onContentPrepare :: some kind of controller of plugin
@@ -31,11 +32,6 @@ class plgContentQlboot extends JPlugin
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
         if ($context == 'com_finder.indexer') return true;
-        if ($this->isJoomla4(JVERSION)) {
-            $this->addWebAssets();
-        } else {
-            $this->addWebAssetsJoomla3();
-        }
         if (false == $this->checkTags($article->text)) return true;
         $article->text = $this->clearTags($article->text);
         $article->text = $this->getMatches($article->text);
@@ -59,6 +55,11 @@ class plgContentQlboot extends JPlugin
             $wam->useScript('jquery');
         }
         if ((bool)$this->params->get('useStyles', false)) {
+            if ($this->isJoomla4(JVERSION)) {
+                $this->addWebAssets();
+            } else {
+                $this->addWebAssetsJoomla3();
+            }
             $wam->registerAndUseStyle('plg_content_qlboot', 'plg_content_qlboot/qlboot.css');
             $wam->registerAndUseStyle('plg_content_qlboot_flex', 'plg_content_qlboot/qlboot-flex.css');
         }
@@ -103,9 +104,9 @@ class plgContentQlboot extends JPlugin
     {
         $regex = '!{' . $this->start_row . '(.*?)}(.*?){' . $this->end_row . '}!s';
         preg_match_all($regex, $str, $matches, PREG_SET_ORDER);
-        $this->arr_replaces = array();
+        $this->arr_replaces = [];
         if (0 < count($matches)) foreach ($matches as $k => $v) {
-            $this->arr_replaces[$k] = array();
+            $this->arr_replaces[$k] = [];
             $this->arr_replaces[$k]['str'] = $v[0];
             $this->arr_replaces[$k] = array_merge($v, $this->getAttributes($v[1]));
             $this->arr_replaces[$k]['content'] = $this->getContent($v[2]);
@@ -118,24 +119,29 @@ class plgContentQlboot extends JPlugin
     /**
      *
      */
-    function getHtml($arr)
+    function getHtml($arr, $bootstrapVersion = 5)
     {
         $class = $this->params->get('default', 'row-fluid');
         if ('row-fluid' == $class) $class = 'span';
         if ('boot' == $arr['type']) $arr['type'] .= ' row-fluid';
+        $wrapper_class = 5 === $bootstrapVersion ? 'row' : $arr['class'];
         $html = '';
-        $html .= '<div class="qlboot ' . $arr['class'] . ' ' . $arr['type'] . '"';
+        $html .= '<div class="qlboot ' . $wrapper_class . ' ' . $arr['type'] . '"';
         if ('' != $arr['style']) $html .= ' style="' . $arr['style'] . '"';
         $html .= '>';
         //echo '<pre>';print_R($arr);die;
         foreach ($arr['content'] as $k => $v) {
             //$class='span';
+            $width = $v['width'];
             if ('flex' == $arr['type']) $class = 'flex';
-            elseif ('row-fluid' == $arr['type']) $class = 'span';
+            elseif ('row-fluid' == $arr['type']) {
+                $class = 5 === $bootstrapVersion ? 'col-md-%s col-sm-12' : 'span%s';
+                $class = sprintf($class, $width);
+            }
 
-            $html .= '<div class="' . $class . $v['width'] . ' ' . $v['class'] . '"';
-            if ('' != $v['style']) $html .= ' style="' . $v['style'] . '"';
-            if ('' != $v['id']) $html .= ' id="' . $v['id'] . '"';
+            $html .= sprintf('<div class="%s %s"', $class, $v['class']);
+            if ('' != $v['style']) $html .= sprintf(' style="%s"', $v['style']);
+            if ('' != $v['id']) $html .= sprintf(' id="%s"', $v['id']);
             $html .= '>';
             $html .= $v['content'];
             $html .= '</div>' . "\n\r";
@@ -153,9 +159,9 @@ class plgContentQlboot extends JPlugin
         $regex = '!{' . $this->start_span . '([0-9]{1,2})(.*?)}(.*?){' . $this->end_span . '}!s';
         preg_match_all($regex, $str, $matches, PREG_SET_ORDER);
         //echo '<pre>'.$regex;print_r($matches);die;
-        $arr_content = array();
+        $arr_content = [];
         if (0 < count($matches)) foreach ($matches as $k => $v) {
-            $arr_content[$k] = array();
+            $arr_content[$k] = [];
             $arr_content[$k]['width'] = $v[1];
             $arr_content[$k]['content'] = $v[3];
             $arr_content[$k] = array_merge($arr_content[$k], $this->getAttributes($v[2]));
@@ -169,7 +175,7 @@ class plgContentQlboot extends JPlugin
      */
     function getAttributes($str)
     {
-        $attributes = array();
+        $attributes = [];
         $attributes['type'] = $this->params->get('default', 'row-fluid');
         $attributes['class'] = '';
         $attributes['id'] = '';
@@ -219,7 +225,7 @@ class plgContentQlboot extends JPlugin
 
     function getStyles()
     {
-        $styles = array();
+        $styles = [];
         $styles[] = '.qlboot.flex>div';
         $styles[] = '{';
         $styles[] = 'padding:' . $this->params->get('flexPadding', 0) . 'px;';
