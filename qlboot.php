@@ -31,10 +31,10 @@ class plgContentQlboot extends JPlugin
      */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
-        if ($context == 'com_finder.indexer') return true;
-        if (false == $this->checkTags($article->text)) return true;
-        $article->text = $this->clearTags($article->text);
-        $article->text = $this->getMatches($article->text);
+        if ((string)$context === 'com_finder.indexer') return true;
+        if ($this->checkTags((string)$article->text)) return true;
+        $article->text = $this->clearTags((string)$article->text);
+        $article->text = $this->getMatches((string)$article->text);
     }
 
     /**
@@ -89,18 +89,15 @@ class plgContentQlboot extends JPlugin
         return $this->_name;
     }
 
-    function checkTags($str)
+    function checkTags(string $str): bool
     {
-        $return = false;
-        if (false !== strpos($str, '{' . $this->start_row) and false !== strpos($str, '{' . $this->end_row)) $return = true;
-        //if(false!==strpos($str, '{'.$this->start_flex) AND false!==strpos($str, '{'.$this->end_flex))$return=true;
-        return $return;
+        return (false !== strpos($str, '{' . $this->start_row) && false !== strpos($str, '{' . $this->end_row));
     }
 
     /*
      * method to get attributes
      */
-    function getMatches($str)
+    function getMatches(string $str): string
     {
         $regex = '!{' . $this->start_row . '(.*?)}(.*?){' . $this->end_row . '}!s';
         preg_match_all($regex, $str, $matches, PREG_SET_ORDER);
@@ -204,7 +201,7 @@ class plgContentQlboot extends JPlugin
     /**
      * method to clear tags
      */
-    function clearTags($str)
+    function clearTags(string $str)
     {
         /*rows*/
         $str = str_replace('<p>{' . $this->end_row . '}', '{' . $this->end_row . '}', $str);
