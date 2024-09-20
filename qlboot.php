@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        plg_content_qlboot
- * @copyright    Copyright (C) 2023 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2024 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -16,19 +16,19 @@ jimport('joomla.plugin.plugin');
 
 class plgContentQlboot extends CMSPlugin
 {
-    /*todo: getAttributes class="row", class="flex"*/
-    protected int $bootstrap_version = 5;
+
+    const BOOTSTRAP_VERSION_DEFAULT = 5;
     protected string $start_row = 'row';
     protected string $end_row = '/row';
     protected string $start_span = 'span';
     protected string $end_span = '/span';
     protected array $arr_attributes = ['style', 'class', 'id', 'type',];
+    protected array $arr_replaces = [];
     protected array $attributes = [];
     protected $pluginName = [];
+    public $params = [];
+    public int $bootstrapVersion;
 
-    /**
-     * onContentPrepare :: some kind of controller of plugin
-     */
     public function onContentPrepare($context, &$article, &$params, $page = 0)
     {
         if ((string) $context === 'com_finder.indexer') {
@@ -37,100 +37,57 @@ class plgContentQlboot extends CMSPlugin
         if ($this->checkTags((string) $article->text)) {
             return true;
         }
+        $this->bootstrapVersion = (int)$this->params->get('bootstrapVersion', self::BOOTSTRAP_VERSION_DEFAULT);
+        $this->addWebAssets();
         $article->text = $this->clearTags((string) $article->text);
         $article->text = $this->getMatches((string) $article->text);
     }
 
-    /**
-     *
-     */
-    public function isJoomla4($version)
-    {
-        return 4 <= $version;
-    }
-
-    /**
-     * onContentPrepare :: some kind of controller of plugin
-     */
     private function addWebAssets()
     {
-        $wam = Factory::getDocument()->getWebAssetManager();
-        if ((bool) $this->params->get('bootstrap', false)) {
-            $wam->useScript('jquery');
+        $wam = Factory::getApplication()->getDocument()->getWebAssetManager();
+        $wam->registerAndUseStyle('plg_content_qlboot_row', 'plg_content_qlboot/qlboot.css');
+        $wam->registerAndUseStyle('plg_content_qlboot_flex', 'plg_content_qlboot/qlboot-flex.css');
+        if ($this->params->get('bootstrap', false)) {
+            $wam->useAsset('style', 'bootstrap.css');
         }
-        if ((bool) $this->params->get('useStyles', false)) {
-            if ($this->isJoomla4(JVERSION)) {
-                $this->addWebAssets();
-            } else {
-                $this->addWebAssetsJoomla3();
-            }
-            $wam->registerAndUseStyle('plg_content_qlboot', 'plg_content_qlboot/qlboot.css');
-            $wam->registerAndUseStyle('plg_content_qlboot_flex', 'plg_content_qlboot/qlboot-flex.css');
+        if ($this->params->get('useStyles', false)) {
+            $wam->addInlineStyle($this->getStyles());
         }
-        $wam->addInlineStyle($this->getStyles());
-    }
-
-    /**
-     * onContentPrepare :: some kind of controller of plugin
-     */
-    private function addWebAssetsJoomla3()
-    {
-        $pluginName = $this->getPluginName();
-        $document = JFactory::getDocument();
-        if ((bool) $this->params->get('bootstrap', false)) {
-            JHtml::_('bootstrap.framework');
-        }
-        if ((bool) $this->params->get('useStyles', false)) {
-            $document->addStyleSheet(JURI::base() . 'plugins/content/' . $pluginName . '/css/' . $pluginName . '.css');
-            $document->addStyleSheet(JURI::base() . 'plugins/content/' . $pluginName . '/css/' . $pluginName . '-flex.css');
-        }
-        $document->addScriptDeclaration($this->getStyles());
-    }
-
-    public function getPluginName()
-    {
-        if ((int) JVERSION <= 3) {
-            return $this->get('_name');
-        }
-        return $this->_name;
     }
 
     public function checkTags(string $str): bool
     {
-        return (false !== strpos($str, '{' . $this->start_row) && false !== strpos($str, '{' . $this->end_row));
+        return
+            false === strpos($str, '{' . $this->start_row)
+            || false === strpos($str, '{' . $this->end_row);
     }
 
-    /*
-     * method to get attributes
-     */
     public function getMatches(string $str): string
     {
         $regex = '!{' . $this->start_row . '(.*?)}(.*?){' . $this->end_row . '}!s';
         preg_match_all($regex, $str, $matches, PREG_SET_ORDER);
-        $this->arr_replaces = [];
-        if (0 < count($matches)) {
-            foreach ($matches as $k => $v) {
-                $this->arr_replaces[$k] = [];
-                $this->arr_replaces[$k]['str'] = $v[0];
-                $this->arr_replaces[$k] = array_merge($v, $this->getAttributes($v[1]));
-                $this->arr_replaces[$k]['content'] = $this->getContent($v[2]);
-                $this->arr_replaces[$k]['html'] = $this->getHtml($this->arr_replaces[$k]);
-                $str = str_replace($v[0], $this->arr_replaces[$k]['html'], $str);
-            }
+        if (empty($matches)) {
+            return $str;
+        }
+        foreach ($matches as $k => $v) {
+            $this->arr_replaces[$k] = [];
+            $this->arr_replaces[$k]['str'] = $v[0] ?? '';
+            $this->arr_replaces[$k] = array_merge($v, $this->getAttributes($v[1] ?? ''));
+            $this->arr_replaces[$k]['content'] = $this->getContent($v[2] ?? '');
+            $this->arr_replaces[$k]['html'] = $this->getHtml($this->arr_replaces[$k]);
+            $str = str_replace($v[0] ?? '', $this->arr_replaces[$k]['html'], $str);
         }
         return $str;
     }
 
-    /**
-     *
-     */
     public function getHtml($arr, $bootstrapVersion = 5)
     {
         $class = $this->params->get('default', 'row-fluid');
-        if ('row-fluid' == $class) {
+        if ('row-fluid' === $class) {
             $class = 'span';
         }
-        if ('boot' == $arr['type']) {
+        if ('boot' === $arr['type']) {
             $arr['type'] .= ' row-fluid';
         }
         $wrapper_class = 5 === $bootstrapVersion ? 'row' : $arr['class'];
@@ -166,31 +123,24 @@ class plgContentQlboot extends CMSPlugin
         return $html;
     }
 
-    /**
-     * @param $str
-     * @return array
-     */
     public function getContent($str)
     {
         $regex = '!{' . $this->start_span . '([0-9]{1,2})(.*?)}(.*?){' . $this->end_span . '}!s';
         preg_match_all($regex, $str, $matches, PREG_SET_ORDER);
-        //echo '<pre>'.$regex;print_r($matches);die;
+        if (0 >= count($matches)) {
+            return [];
+        }
         $arr_content = [];
-        if (0 < count($matches)) {
-            foreach ($matches as $k => $v) {
-                $arr_content[$k] = [];
-                $arr_content[$k]['width'] = $v[1];
-                $arr_content[$k]['content'] = $v[3];
-                $arr_content[$k] = array_merge($arr_content[$k], $this->getAttributes($v[2]));
-            }
+        foreach ($matches as $k => $v) {
+            $arr_content[$k] = [];
+            $arr_content[$k]['width'] = $v[1];
+            $arr_content[$k]['content'] = $v[3];
+            $arr_content[$k] = array_merge($arr_content[$k], $this->getAttributes($v[2]));
         }
         //echo '<pre>';print_r($arr_content);die;
         return $arr_content;
     }
 
-    /*
-     * method to get attributes
-     */
     public function getAttributes($str)
     {
         $attributes = [];
@@ -200,32 +150,19 @@ class plgContentQlboot extends CMSPlugin
         $attributes['style'] = '';
         $selector = implode('|', $this->arr_attributes);
         $regex = '~(' . $selector . ')="(.*?)"~s';
+        if (empty($matches) || empty($matches[0] ?? [])) {
+            return $attributes;
+        }
         preg_match_all($regex, $str, $matches);
         foreach ($matches[0] as $k => $v) {
-            if ('' != $matches[2][$k]) {
-                $attributes[$matches[1][$k]] = $matches[2][$k];
+            if (empty($matches[2][$k])) {
+                continue;
             }
+            $attributes[$matches[1][$k]] = $matches[2][$k];
         }
-        //if('flex'==$attributes['type'])$attributes['divClass']='displayFlex';
-        //if('boot'==$attributes['type'])$attributes['divClass']='qlboot row-fluid';
-        //print_R($attributes);die;
         return $attributes;
     }
 
-    /*
-     * method to get attributes
-     */
-    public function replaceTags($str)
-    {
-
-        //echo '<pre>'; print_r($this->arr_replaces);die;
-
-        return $str;
-    }
-
-    /**
-     * method to clear tags
-     */
     public function clearTags(string $str)
     {
         /*rows*/

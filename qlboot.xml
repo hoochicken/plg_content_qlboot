@@ -2,12 +2,12 @@
 <extension type="plugin" version="1.4.3" group="content" method="upgrade">
     <name>PLG_CONTENT_QLBOOT</name>
     <author>Mareike Riegel</author>
-    <creationDate>Octobre 2023</creationDate>
-    <copyright>Copyright (C) 2023 ql.de All rights reserved.</copyright>
+    <creationDate>Octobre 2024</creationDate>
+    <copyright>Copyright (C) 2024 ql.de All rights reserved.</copyright>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>http://www.ql.de/</authorUrl>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>3.0.1</version>
+    <version>4.0.0</version>
     <description>PLG_CONTENT_QLBOOT_DESCRIPTION</description>
     <media folder="media" destination="plg_content_qlboot">
         <folder>css</folder>
@@ -33,7 +33,7 @@
 	<config>
 		<fields name="params">
             <fieldset name="basic">
-                <field name="bootstrap_version" label="PLG_CONTENT_QLBOOT_BOOTSTRAPVERSION_LABEL" description="PLG_CONTENT_QLBOOT_BOOTSTRAPVERSION_DESC" class="btn-group" type="radio" default="5">
+                <field name="bootstrapVersion" label="PLG_CONTENT_QLBOOT_BOOTSTRAPVERSION_LABEL" description="PLG_CONTENT_QLBOOT_BOOTSTRAPVERSION_DESC" class="btn-group" type="radio" default="5">
                     <option value="5">5</option>
                     <option value="4">4</option>
                 </field>
