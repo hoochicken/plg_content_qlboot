@@ -11,7 +11,6 @@
     <description>PLG_CONTENT_QLBOOT_DESCRIPTION</description>
     <media folder="media" destination="plg_content_qlboot">
         <folder>css</folder>
-        <folder>js</folder>
     </media>
     <updateservers>
         <server type="extension" priority="1" name="qlboot - Updates">https://raw.githubusercontent.com/hoochicken/plg_content_qlboot/main/_jupdate/plg_content_qlboot.xml</server>
