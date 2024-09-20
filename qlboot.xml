@@ -7,7 +7,7 @@
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>http://www.ql.de/</authorUrl>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>4.0.0</version>
+    <version>4.0.1</version>
     <description>PLG_CONTENT_QLBOOT_DESCRIPTION</description>
     <media folder="media" destination="plg_content_qlboot">
         <folder>css</folder>
