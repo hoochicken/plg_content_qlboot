@@ -1,5 +1,26 @@
 {
+    "name": "hoochicken/plg_content_qlboot",
+    "description": "Joomla content plugin dividing articles into Bootstrap 5 columns",
+    "type": "joomla-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.3"
+    },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.64"
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Hoochicken\\Plugin\\Content\\Qlboot\\": "src/",
+            "Hoochicken\\Plugin\\Content\\Qlboot\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "cs": "php-cs-fixer fix --dry-run --diff"
+    },
+    "config": {
+        "sort-packages": true
     }
 }

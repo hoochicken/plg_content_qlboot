@@ -5,7 +5,8 @@ $finder = (new PhpCsFixer\Finder())
         __DIR__,
     ])
     ->exclude([
-            'css',
+            'media',
+            'tests',
             'language',
             'vendor',
     ]);
